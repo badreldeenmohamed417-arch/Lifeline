@@ -5,7 +5,6 @@ import com.example.lifeline.checkNumbers.ContactStorage
 import com.example.lifeline.checkNumbers.SavedContact
 import com.example.lifeline.emergencyMessage.EmergencyMessageStorage
 import com.example.lifeline.emergencyMode.phone.EmergencyManager
-import com.example.lifeline.emergencyMode.phone.PhoneLauncher
 import com.example.lifeline.emergencyNumber.EmergencyNumberStorage
 
 fun emergencyWorker(

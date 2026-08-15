@@ -1,17 +1,17 @@
 package com.example.lifeline.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.lifeline.checkNumber.ContactsScreen
-import com.example.lifeline.permissions.PermissionsScreen
 import com.example.lifeline.actions.QuickActionsScreen
+import com.example.lifeline.checkNumber.ContactsScreen
 import com.example.lifeline.emergencyMessage.EmergencyMessageScreen
+import com.example.lifeline.emergencyMode.startEmergencyMode
 import com.example.lifeline.emergencyNumber.EmergencyNumberScreen
 import com.example.lifeline.main.LifelineScreen
-import androidx.compose.ui.platform.LocalContext
-import com.example.lifeline.emergencyMode.startEmergencyMode
+import com.example.lifeline.permissions.PermissionsScreen
 
 @Composable
 fun AppNavigation(

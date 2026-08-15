@@ -6,8 +6,8 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import com.example.lifeline.R
 import com.example.lifeline.MainActivity
+import com.example.lifeline.R
 
 class LifelineWidget : AppWidgetProvider() {
 

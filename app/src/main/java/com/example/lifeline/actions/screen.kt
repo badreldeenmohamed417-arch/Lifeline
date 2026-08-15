@@ -34,13 +34,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lifeline.setup.SetupStorage
 import com.example.lifeline.ui.components.ProgressSteps
 import com.example.lifeline.ui.theme.InterFont
-import androidx.compose.ui.platform.LocalContext
-import com.example.lifeline.setup.SetupStorage
 import com.example.lifeline.widget.WidgetInstaller
 
 private val Ink = Color(0xFF0B0F17)

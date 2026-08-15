@@ -4,8 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.activity.compose.ManagedActivityResultLauncher
 import android.os.Build
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.core.app.ActivityCompat
 
 object LifelinePermissions {

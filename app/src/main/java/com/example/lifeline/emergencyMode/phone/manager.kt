@@ -4,8 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.example.lifeline.checkNumbers.SavedContact
-import com.example.lifeline.emergencyMode.phone.CallStateMonitor
-import com.example.lifeline.emergencyMode.phone.PhoneLauncher
 
 class EmergencyManager(
     private val context: Context,
