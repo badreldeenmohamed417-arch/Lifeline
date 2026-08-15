@@ -2,53 +2,34 @@ package com.example.lifeline.emergencyMode
 
 import android.annotation.SuppressLint
 import android.content.Context
-
+import android.location.Location
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-
-sealed class LocationResult {
-
-    data class Success(
-        val latitude: Double,
-        val longitude: Double
-    ) : LocationResult()
-
-    data object Unavailable : LocationResult()
-}
 
 object LocationHelper {
 
     @SuppressLint("MissingPermission")
     fun getCurrentLocation(
         context: Context,
-        onResult: (LocationResult) -> Unit
+        onResult: (Location?) -> Unit
     ) {
-        val client =
-            LocationServices.getFusedLocationProviderClient(context)
+        try {
+            val client =
+                LocationServices.getFusedLocationProviderClient(context)
 
-        client.getCurrentLocation(
-            Priority.PRIORITY_HIGH_ACCURACY,
-            null
-        )
-            .addOnSuccessListener { location ->
-
-                if (location == null) {
-                    onResult(
-                        LocationResult.Unavailable
-                    )
-                } else {
-                    onResult(
-                        LocationResult.Success(
-                            latitude = location.latitude,
-                            longitude = location.longitude
-                        )
-                    )
+            client.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                null
+            )
+                .addOnSuccessListener { location ->
+                    onResult(location)
                 }
-            }
-            .addOnFailureListener {
-                onResult(
-                    LocationResult.Unavailable
-                )
-            }
+                .addOnFailureListener {
+                    onResult(null)
+                }
+        } catch (e: Exception) {
+            com.example.lifeline.util.ErrorHandler.showUnexpectedError(context)
+            onResult(null)
+        }
     }
 }

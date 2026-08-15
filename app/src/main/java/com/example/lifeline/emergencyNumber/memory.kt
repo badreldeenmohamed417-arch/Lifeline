@@ -34,4 +34,15 @@ object EmergencyNumberStorage {
             )
             .getString(KEY_NUMBER, null)
     }
+
+    fun clearNumber(context: Context) {
+        context
+            .getSharedPreferences(
+                PREFS_NAME,
+                Context.MODE_PRIVATE
+            )
+            .edit()
+            .remove(KEY_NUMBER)
+            .apply()
+    }
 }

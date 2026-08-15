@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/inter_regular"
-        android:text="Hold to Help"
+        android:text="Tap to open Emergency"
         android:textColor="#9AA5B5"
         android:textSize="13sp" />
 

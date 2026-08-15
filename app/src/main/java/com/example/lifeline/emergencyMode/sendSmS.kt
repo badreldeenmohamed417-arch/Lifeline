@@ -57,6 +57,7 @@ object SmsSender {
             }
 
         } catch (_: Exception) {
+            com.example.lifeline.util.ErrorHandler.showUnexpectedError(context)
             onResult(
                 SmsResult.Failed(
                     contacts.map { it.number }

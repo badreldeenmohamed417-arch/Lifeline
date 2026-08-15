@@ -9,13 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,13 +22,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lifeline.ui.components.ProgressSteps
 import com.example.lifeline.ui.theme.InterFont
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 
 private val Ink = Color(0xFF0B0F17)
+private val Panel = Color(0xFF141B29)
+private val Line = Color(0xFF283245)
+private val Calm = Color(0xFF33C48A)
+
 
 @Composable
 fun EmergencyMessageScreen(
@@ -52,7 +55,7 @@ fun EmergencyMessageScreen(
         ) {
 
             ProgressSteps(
-                currentStep = 1
+                currentStep = 3
             )
 
             Spacer(
@@ -80,16 +83,44 @@ fun EmergencyMessageScreen(
                 modifier = Modifier.height(8.dp)
             )
 
-            TextField(
+            OutlinedTextField(
                 value = emergencyMessage,
                 onValueChange = {
-                    if (it.all(Char::isDigit)) {
-                        emergencyMessage = it
-                    }
+                    emergencyMessage = it
                 },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(140.dp),
                 label = {
-                    Text("Emergency Message")
-                }
+                    Text(
+                        text = "Emergency Message"
+                    )
+                },
+                placeholder = {
+                    Text(
+                        text = "🚨 I need immediate help! 🆘"
+                    )
+                },
+                maxLines = 5,
+                shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+
+                    focusedBorderColor = Calm,
+                    unfocusedBorderColor = Line,
+
+                    focusedLabelColor = Calm,
+                    unfocusedLabelColor = Color(0xFF8E99AA),
+
+                    cursorColor = Calm,
+
+                    focusedContainerColor = Panel,
+                    unfocusedContainerColor = Panel,
+
+                    focusedPlaceholderColor = Color(0xFF697386),
+                    unfocusedPlaceholderColor = Color(0xFF697386)
+                )
             )
 
             Spacer(
@@ -102,15 +133,15 @@ fun EmergencyMessageScreen(
 
             Button(
                 onClick = {
-                    val number = emergencyMessage.trim()
+                    val message = emergencyMessage.trim()
 
-                    if (number.isEmpty()) {
+                    if (message.isEmpty()) {
                         return@Button
                     }
 
                     EmergencyMessageStorage.saveMessage(
                         context = context,
-                        number = number
+                        message = message
                     )
 
                     onContinue()

@@ -4,12 +4,12 @@ import android.content.Context
 
 object EmergencyMessageStorage {
 
-    private const val PREFS_NAME = "lifeline_emergency"
-    private const val KEY_NUMBER = "emergency_number"
+    private const val PREFS_NAME = "lifeline_emergency_message"
+    private const val KEY_MESSAGE = "emergency_message"
 
     fun saveMessage(
         context: Context,
-        number: String
+        message: String
     ) {
         context
             .getSharedPreferences(
@@ -18,8 +18,8 @@ object EmergencyMessageStorage {
             )
             .edit()
             .putString(
-                KEY_NUMBER,
-                number.trim()
+                KEY_MESSAGE,
+                message.trim()
             )
             .apply()
     }
@@ -32,6 +32,17 @@ object EmergencyMessageStorage {
                 PREFS_NAME,
                 Context.MODE_PRIVATE
             )
-            .getString(KEY_NUMBER, null)
+            .getString(KEY_MESSAGE, null)
+    }
+
+    fun clearMessage(context: Context) {
+        context
+            .getSharedPreferences(
+                PREFS_NAME,
+                Context.MODE_PRIVATE
+            )
+            .edit()
+            .remove(KEY_MESSAGE)
+            .apply()
     }
 }

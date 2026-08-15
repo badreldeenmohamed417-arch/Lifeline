@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.Alignment
 
+
 @Composable
 fun ContactPicker(
     contacts: List<Contact>,

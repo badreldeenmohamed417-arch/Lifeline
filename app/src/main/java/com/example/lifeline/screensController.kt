@@ -9,11 +9,15 @@ import com.example.lifeline.permissions.PermissionsScreen
 import com.example.lifeline.actions.QuickActionsScreen
 import com.example.lifeline.emergencyMessage.EmergencyMessageScreen
 import com.example.lifeline.emergencyNumber.EmergencyNumberScreen
+import com.example.lifeline.main.LifelineScreen
+import androidx.compose.ui.platform.LocalContext
+import com.example.lifeline.emergencyMode.startEmergencyMode
 
 @Composable
 fun AppNavigation(
     startDestination: String
 ) {
+    val context = LocalContext.current
     val navController = rememberNavController()
 
     NavHost(
@@ -40,7 +44,7 @@ fun AppNavigation(
         composable("contacts") {
             ContactsScreen(
                 onContinue = {
-                    navController.navigate("emergency_number")
+                    navController.navigate("emergencyNumber")
                 },
             )
         }
@@ -52,7 +56,11 @@ fun AppNavigation(
         composable("action") {
             QuickActionsScreen(
                 onContinue = {
-                    navController.navigate("lifeline")
+                    navController.navigate("home") {
+                        popUpTo("action") {
+                            inclusive = true
+                        }
+                    }
                 },
                 onBack = {
                     navController.popBackStack()
@@ -84,8 +92,33 @@ fun AppNavigation(
         // 4. Lifeline
         // ─────────────────────────────
 
-//        composable("lifeline") {
-//            LifelineScreen()
-//        }
+        composable("home") {
+            LifelineScreen(
+                onEmergency = {
+                    startEmergencyMode(
+                        context
+                    )
+                },
+                onStopEmergency = {
+                    com.example.lifeline.emergencyMode.stopEmergencyMode(
+                        context
+                    )
+                },
+                onReset = {
+                    // 1. Clear Storage
+                    com.example.lifeline.checkNumbers.ContactStorage.clearContacts(context)
+                    com.example.lifeline.emergencyNumber.EmergencyNumberStorage.clearNumber(context)
+                    com.example.lifeline.emergencyMessage.EmergencyMessageStorage.clearMessage(context)
+                    com.example.lifeline.setup.SetupStorage.resetSetup(context)
+
+                    // 2. Navigate back to start
+                    navController.navigate("permissions") {
+                        popUpTo("home") {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
     }
 }

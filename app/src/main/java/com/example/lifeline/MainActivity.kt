@@ -20,11 +20,16 @@ import com.example.lifeline.ui.theme.LifelineTheme
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_Lifeline)
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
 
-        val startDestination = getStartDestination()
+        val startDestination = try {
+            getStartDestination()
+        } catch (e: Exception) {
+            "permissions"
+        }
 
         setContent {
             LifelineTheme {
@@ -43,11 +48,27 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        // Setup finished → always enter Home
+        // but restore any permissions that were revoked
+        if (SetupStorage.isSetupDone(this)) {
+            LifelinePermissions.requestMissingPermissions(this)
+        }
     }
-
     private fun getStartDestination(): String {
+        try {
+            // =========================================
+            // 1. Setup already completed
+            // =========================================
 
-        // 1. Basic permissions
+            if (SetupStorage.isSetupDone(this)) {
+                return "home"
+            }
+
+        // =========================================
+        // 2. Basic permissions
+        // =========================================
+
         val locationGranted =
             LifelinePermissions.hasLocationPermission(this)
 
@@ -57,11 +78,18 @@ class MainActivity : ComponentActivity() {
         val phoneGranted =
             LifelinePermissions.hasPhonePermission(this)
 
-        if (!locationGranted || !smsGranted || !phoneGranted) {
+        if (
+            !locationGranted ||
+            !smsGranted ||
+            !phoneGranted
+        ) {
             return "permissions"
         }
 
-        // 2. Contacts permission
+        // =========================================
+        // 3. Contacts permission
+        // =========================================
+
         val contactsGranted =
             LifelinePermissions.hasContactsPermission(this)
 
@@ -69,7 +97,10 @@ class MainActivity : ComponentActivity() {
             return "contacts"
         }
 
-        // 3. Emergency contacts
+        // =========================================
+        // 4. Emergency contacts
+        // =========================================
+
         val savedContacts =
             ContactStorage.getContacts(this)
 
@@ -77,13 +108,20 @@ class MainActivity : ComponentActivity() {
             return "contacts"
         }
 
-        // 4. Emergency number
+        // =========================================
+        // 5. Emergency number
+        // =========================================
+
         val emergencyNumber =
             EmergencyNumberStorage.getNumber(this)
 
         if (emergencyNumber.isNullOrBlank()) {
             return "emergencyNumber"
         }
+
+        // =========================================
+        // 6. Emergency message
+        // =========================================
 
         val emergencyMessage =
             EmergencyMessageStorage.getMessage(this)
@@ -92,12 +130,13 @@ class MainActivity : ComponentActivity() {
             return "emergencyMessage"
         }
 
-        // 5. Setup completed
-        if (!SetupStorage.isSetupDone(this)) {
-            return "actions"
-        }
+        // =========================================
+        // 7. Final setup step
+        // =========================================
 
-        // 6. Everything is ready
-        return "home"
+        return "actions"
+    } catch (e: Exception) {
+        return "permissions"
     }
+}
 }

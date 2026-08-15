@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
@@ -27,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +58,29 @@ fun PermissionsScreen(
 ) {
     val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        val locationGranted =
+            LifelinePermissions.hasLocationPermission(context)
+
+        val smsGranted =
+            LifelinePermissions.hasSmsPermission(context)
+
+        val phoneGranted =
+            LifelinePermissions.hasPhonePermission(context)
+
+        val phoneStateGranted =
+            LifelinePermissions.hasPhoneStatePermission(context)
+
+        if (
+            locationGranted &&
+            smsGranted &&
+            phoneGranted &&
+            phoneStateGranted
+        ) {
+            onContinue()
+        }
+    }
+
     var permissionVersion by remember {
         mutableStateOf(0)
     }
@@ -65,7 +91,6 @@ fun PermissionsScreen(
         ) {
             permissionVersion++
 
-            // نقرأ الحالة الجديدة بعد رجوع Android
             val locationGranted =
                 LifelinePermissions.hasLocationPermission(context)
 
@@ -75,8 +100,15 @@ fun PermissionsScreen(
             val phoneGranted =
                 LifelinePermissions.hasPhonePermission(context)
 
-            // لو كل الصلاحيات اتاخدت → انتقل للشاشة التالية
-            if (locationGranted && smsGranted && phoneGranted) {
+            val phoneStateGranted =
+                LifelinePermissions.hasPhoneStatePermission(context)
+
+            if (
+                locationGranted &&
+                smsGranted &&
+                phoneGranted &&
+                phoneStateGranted
+            ) {
                 onContinue()
             }
         }
@@ -92,6 +124,9 @@ fun PermissionsScreen(
 
     val phoneGranted =
         LifelinePermissions.hasPhonePermission(context)
+
+    val phoneStateGranted =
+        LifelinePermissions.hasPhoneStatePermission(context)
 
     Box(
         modifier = Modifier
@@ -133,41 +168,70 @@ fun PermissionsScreen(
                 modifier = Modifier.height(8.dp)
             )
 
-            PermissionCard(
-                icon = Icons.Default.LocationOn,
-                title = "Location",
-                description = "Attached to your emergency message so contacts know exactly where to find you.",
-                granted = locationGranted,
-                onClick = {
-                    LifelinePermissions.requestLocationPermission(
-                        launcher
-                    )
-                }
-            )
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(
+                    bottom = 24.dp
+                )
+            ) {
 
-            PermissionCard(
-                icon = Icons.Default.Message,
-                title = "SMS",
-                description = "Sends your emergency message to the people you trust when Lifeline is triggered.",
-                granted = smsGranted,
-                onClick = {
-                    LifelinePermissions.requestSmsPermission(
-                        launcher
+                item {
+                    PermissionCard(
+                        icon = Icons.Default.LocationOn,
+                        title = "Location",
+                        description = "Attached to your emergency message so contacts know exactly where to find you.",
+                        granted = locationGranted,
+                        onClick = {
+                            LifelinePermissions.requestLocationPermission(
+                                launcher
+                            )
+                        }
                     )
                 }
-            )
 
-            PermissionCard(
-                icon = Icons.Default.Phone,
-                title = "Phone calls",
-                description = "Allows Lifeline to start an emergency call when you trigger it.",
-                granted = phoneGranted,
-                onClick = {
-                    LifelinePermissions.requestPhonePermission(
-                        launcher
+                item {
+                    PermissionCard(
+                        icon = Icons.Default.Message,
+                        title = "SMS",
+                        description = "Sends your emergency message to the people you trust when Lifeline is triggered.",
+                        granted = smsGranted,
+                        onClick = {
+                            LifelinePermissions.requestSmsPermission(
+                                launcher
+                            )
+                        }
                     )
                 }
-            )
+
+                item {
+                    PermissionCard(
+                        icon = Icons.Default.Phone,
+                        title = "Phone calls",
+                        description = "Allows Lifeline to start an emergency call when you trigger it.",
+                        granted = phoneGranted,
+                        onClick = {
+                            LifelinePermissions.requestPhonePermission(
+                                launcher
+                            )
+                        }
+                    )
+                }
+
+                item {
+                    PermissionCard(
+                        icon = Icons.Default.Phone,
+                        title = "Call status",
+                        description = "Allows Lifeline to know when an emergency contact answers or ends the call.",
+                        granted = phoneStateGranted,
+                        onClick = {
+                            LifelinePermissions.requestPhoneStatePermission(
+                                launcher
+                            )
+                        }
+                    )
+                }
+            }
         }
     }
 }

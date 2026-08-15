@@ -1,8 +1,16 @@
 package com.example.lifeline.checkNumber
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,7 +29,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -31,13 +44,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lifeline.checkNumbers.Contact
+import com.example.lifeline.checkNumbers.ContactStorage
+import com.example.lifeline.checkNumbers.SavedContact
 import com.example.lifeline.checkNumbers.getContacts
 import com.example.lifeline.permissions.LifelinePermissions
 import com.example.lifeline.ui.components.ProgressSteps
-import androidx.compose.foundation.clickable
 import com.example.lifeline.ui.theme.InterFont
-import com.example.lifeline.checkNumbers.ContactStorage
-import com.example.lifeline.checkNumbers.SavedContact
 
 val Ink = Color(0xFF0B0F17)
 val Panel = Color(0xFF141B29)
@@ -70,10 +82,6 @@ fun ContactsScreen(
     var selectedContacts by remember {
         mutableStateOf<List<Contact>>(emptyList())
     }
-
-    // ----------------------------------------
-    // Contacts Permission
-    // ----------------------------------------
 
     val contactsLauncher =
         rememberLauncherForActivityResult(
@@ -161,15 +169,17 @@ fun ContactsScreen(
                         name = contact.name,
                         phone = contact.phone,
                         onRemove = {
+
                             selectedContacts =
                                 selectedContacts.filterNot {
                                     it.id == contact.id &&
                                             it.phone == contact.phone
                                 }
 
-                            chosenContacts = chosenContacts.filterNot {
-                                it.id == contact.id
-                            }
+                            chosenContacts =
+                                chosenContacts.filterNot {
+                                    it.id == contact.id
+                                }
 
                             ContactStorage.saveContacts(
                                 context,
@@ -188,7 +198,17 @@ fun ContactsScreen(
 
                     AddContactButton(
                         onClick = {
-                            showContactPicker = true
+
+                            if (
+                                LifelinePermissions.hasContactsPermission(context)
+                            ) {
+                                showContactPicker = true
+                            } else {
+                                getPermissions(
+                                    context as Activity,
+                                    contactsLauncher
+                                )
+                            }
                         }
                     )
                 }
@@ -398,3 +418,32 @@ fun ContactCard(
     }
 }
 
+fun getPermissions(
+    activity: Activity,
+    launcher: ManagedActivityResultLauncher<String, Boolean>
+) {
+    if (LifelinePermissions.hasContactsPermission(activity)) {
+        return
+    }
+
+    if (LifelinePermissions.shouldOpenSettings(activity)) {
+        openAppSettings(activity, "🔒 Please enable Contacts permission")
+    } else {
+        LifelinePermissions.requestContactsPermission(launcher)
+    }
+}
+
+fun openAppSettings(activity: Activity, message: String) {
+    Toast.makeText(
+        activity,
+        message,
+        Toast.LENGTH_SHORT
+    ).show()
+
+    val intent = Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.parse("package:${activity.packageName}")
+    )
+
+    activity.startActivity(intent)
+}

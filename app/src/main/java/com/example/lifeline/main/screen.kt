@@ -1,5 +1,7 @@
 package com.example.lifeline.main
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -37,25 +41,140 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lifeline.permissions.LifelinePermissions
 import com.example.lifeline.ui.theme.InterFont
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.graphics.Brush
 
 private val Ink = Color(0xFF0B0F17)
 private val Panel = Color(0xFF141B29)
 private val Calm = Color(0xFF33C48A)
 
 @Composable
-fun MainScreen(
+fun LifelineScreen(
     onEmergency: () -> Unit,
-    onSettings: () -> Unit,
-    onContacts: () -> Unit
+    onStopEmergency: () -> Unit,
+    onReset: () -> Unit
 ) {
+    val context = LocalContext.current
+    var showSettingsDialog by remember { mutableStateOf(false) }
+
+    if (showSettingsDialog) {
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = {
+                showSettingsDialog = false
+            },
+            title = {
+                Text(
+                    text = "Settings",
+                    color = Color.White,
+                    fontFamily = InterFont,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+
+                    // Reset preferences
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(
+                                RoundedCornerShape(16.dp)
+                            )
+                            .clickable {
+                                showSettingsDialog = false
+                                onReset()
+                            }
+                            .background(
+                                Color(0xFF1B2434)
+                            )
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+
+                            Text(
+                                text = "Reset Preferences",
+                                color = Color.White,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = InterFont
+                            )
+
+                            Spacer(
+                                modifier = Modifier.height(4.dp)
+                            )
+
+                            Text(
+                                text = "Restart Lifeline setup",
+                                color = Color(0xFF9AA5B5),
+                                fontSize = 12.sp,
+                                fontFamily = InterFont
+                            )
+                        }
+
+                        Text(
+                            text = "›",
+                            color = Color(0xFF9AA5B5),
+                            fontSize = 26.sp
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showSettingsDialog = false
+                    }
+                ) {
+                    Text(
+                        text = "Done",
+                        color = Color.White,
+                        fontFamily = InterFont
+                    )
+                }
+            },
+            containerColor = Panel,
+            shape = RoundedCornerShape(24.dp)
+        )
+    }
+
+    val notificationsLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission()
+        ) {}
+
+    val haveAccess =
+        LifelinePermissions.hasNotificationsPermission(context)
+
+    LaunchedEffect(haveAccess) {
+        if (!haveAccess) {
+            LifelinePermissions.requestNotificationPermission(notificationsLauncher)
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -81,7 +200,7 @@ fun MainScreen(
                 )
 
                 IconButton(
-                    onClick = onSettings
+                    onClick = { showSettingsDialog = true }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
@@ -113,7 +232,68 @@ fun MainScreen(
             )
 
             Spacer(
-                modifier = Modifier.height(18.dp)
+                modifier = Modifier.height(24.dp)
+            )
+
+            // "I'm Good Now" Button
+            var stopHoldProgress by remember { mutableFloatStateOf(0f) }
+            var isStopping by remember { mutableStateOf(false) }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Panel)
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onPress = {
+                                val startTime = System.nanoTime()
+                                isStopping = true
+                                coroutineScope {
+                                    val job = launch {
+                                        while (isStopping) {
+                                            val elapsed = (System.nanoTime() - startTime) / 1_000_000L
+                                            stopHoldProgress = (elapsed / 2000f).coerceIn(0f, 1f)
+                                            if (elapsed >= 2000L) {
+                                                onStopEmergency()
+                                                isStopping = false
+                                                stopHoldProgress = 0f
+                                                break
+                                            }
+                                            delay(16)
+                                        }
+                                    }
+                                    tryAwaitRelease()
+                                    isStopping = false
+                                    stopHoldProgress = 0f
+                                    job.cancel()
+                                }
+                            }
+                        )
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                // Progress Background
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(stopHoldProgress)
+                        .fillMaxHeight()
+                        .align(Alignment.CenterStart)
+                        .background(Calm.copy(alpha = 0.2f))
+                )
+
+                Text(
+                    text = "I'm Good Now",
+                    color = if (stopHoldProgress > 0) Calm else Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = InterFont
+                )
+            }
+
+            Spacer(
+                modifier = Modifier.height(24.dp)
             )
 
             Row(
@@ -144,164 +324,7 @@ fun MainScreen(
             Spacer(
                 modifier = Modifier.weight(1f)
             )
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = onContacts),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Panel
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(18.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Emergency Contacts",
-                        modifier = Modifier.weight(1f),
-                        color = Color.White,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-
-                    Text(
-                        text = "›",
-                        color = Color(0xFF9AA5B5),
-                        fontSize = 24.sp
-                    )
-                }
-            }
         }
     }
 }
 
-@Composable
-fun EmergencyButton(
-    onEmergency: () -> Unit
-) {
-    var isHolding by remember {
-        mutableStateOf(false)
-    }
-
-    var progress by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    var triggered by remember {
-        mutableStateOf(false)
-    }
-
-    Box(
-        modifier = Modifier
-            .size(220.dp)
-            .clip(CircleShape)
-            .background(Color(0xFFB91C1C))
-            .pointerInput(Unit) {
-
-                detectTapGestures(
-                    onPress = {
-
-                        isHolding = true
-                        triggered = false
-                        progress = 0f
-
-                        coroutineScope {
-
-                            val startTime = System.nanoTime()
-
-                            val timerJob = launch {
-                                while (true) {
-
-                                    val elapsed =
-                                        (System.nanoTime() - startTime) / 1_000_000L
-
-                                    progress = (elapsed / 2000f)
-                                        .coerceIn(0f, 1f)
-
-                                    if (elapsed >= 2000L) {
-                                        progress = 1f
-                                        triggered = true
-                                        onEmergency()
-                                        break
-                                    }
-
-                                    delay(16L)
-                                }
-                            }
-
-                            val released = tryAwaitRelease()
-
-                            if (released && !triggered) {
-                                timerJob.cancel()
-
-                                isHolding = false
-                                progress = 0f
-                            } else {
-                                timerJob.cancel()
-
-                                isHolding = false
-                            }
-                        }
-                    }
-                )
-            },
-        contentAlignment = Alignment.Center
-    ) {
-
-        Canvas(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            drawArc(
-                color = Color.White,
-                startAngle = -90f,
-                sweepAngle = 360f * progress,
-                useCenter = false,
-                style = Stroke(
-                    width = 8.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
-            )
-        }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Text(
-                text = "🚨",
-                fontSize = 42.sp
-            )
-
-            Spacer(
-                modifier = Modifier.height(8.dp)
-            )
-
-            Text(
-                text = "LIFELINE",
-                color = Color.White,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = InterFont
-            )
-
-            Spacer(
-                modifier = Modifier.height(4.dp)
-            )
-
-            Text(
-                text = if (isHolding) {
-                    "${(progress * 100).toInt()}%"
-                } else {
-                    "Hold for 2 seconds"
-                },
-                color = Color.White.copy(alpha = 0.75f),
-                fontSize = 12.sp,
-                fontFamily = InterFont
-            )
-        }
-    }
-}
