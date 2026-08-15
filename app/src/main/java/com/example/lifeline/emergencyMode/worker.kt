@@ -16,6 +16,7 @@ fun emergencyWorker(
     number: String
 ) {
     try {
+
         val locationMsg = if (location.isNotBlank()) {
             "Location on Maps: https://www.google.com/maps?q=$location"
         } else {
@@ -28,70 +29,99 @@ fun emergencyWorker(
             message
         }
 
+        // ========================================
+        // 1. SEND SMS FIRST
+        // ========================================
+
         SmsSender.sendEmergencySms(
-            context,
-            contacts,
-            emergencyMessage,
+            context = context,
+            contacts = contacts,
+            message = emergencyMessage,
             onResult = { result ->
 
-                when (result) {
+                try {
 
-                    is SmsResult.Success -> {
-                        NotificationHelper.sendNotification(
-                            context,
-                            "Emergency SMS sent successfully"
-                        )
+                    when (result) {
+
+                        is SmsResult.Success -> {
+
+                            NotificationHelper.sendNotification(
+                                context,
+                                "Emergency SMS sent successfully"
+                            )
+
+                            startEmergencyCalls(
+                                context = context,
+                                contacts = contacts,
+                                ambulanceNumber = number
+                            )
+                        }
+
+                        is SmsResult.Failed -> {
+
+                            NotificationHelper.sendNotification(
+                                context,
+                                "Emergency SMS failed"
+                            )
+                            startEmergencyCalls(
+                                context = context,
+                                contacts = contacts,
+                                ambulanceNumber = number
+                            )
+                        }
                     }
 
-                    is SmsResult.Failed -> {
-                        NotificationHelper.sendNotification(
-                            context,
-                            "Failed to send emergency SMS"
-                        )
-                    }
+                } catch (e: Exception) {
+
+                    com.example.lifeline.util.ErrorHandler
+                        .showUnexpectedError(context)
                 }
             }
         )
 
-        val emergencyManager = EmergencyManager(
-            context = context,
-            contacts = contacts,
-            ambulanceNumber = number,
+    } catch (e: Exception) {
 
-            onDecisionRequired = { contact, onYes, onStop ->
+        com.example.lifeline.util.ErrorHandler
+            .showUnexpectedError(context)
+    }
+}
 
-                /*
-                 * هنا نحتاج عرض الـ UI.
-                 *
-                 * بما أن emergencyWorker ليس Activity،
-                 * لا نعرض AlertDialog مباشرة هنا.
-                 *
-                 * هنرسل Event للـ Emergency UI.
-                 */
+private fun startEmergencyCalls(
+    context: Context,
+    contacts: List<SavedContact>,
+    ambulanceNumber: String
+) {
+    try {
 
-                EmergencyNotification.showDecision(
-                    context = context,
-                    contact = contact
-                )
+        val emergencyManager =
+            EmergencyManager(
+                context = context,
+                contacts = contacts,
+                ambulanceNumber = ambulanceNumber,
 
-                /*
-                 * الـ UI سيستدعي onYes أو onStop
-                 * بعد اختيار المستخدم.
-                 */
-            },
+                onDecisionRequired = { contact, onYes, onStop ->
 
-            onAllContactsFailed = { ambulanceNumber ->
+                    EmergencyNotification.showDecision(
+                        context = context,
+                        contact = contact
+                    )
+                },
 
-                EmergencyNotification.showAmbulance(
-                    context = context,
-                    ambulanceNumber = ambulanceNumber
-                )
-            }
-        )
+                onAllContactsFailed = { number ->
+
+                    EmergencyNotification.showAmbulance(
+                        context = context,
+                        ambulanceNumber = number
+                    )
+                }
+            )
 
         emergencyManager.start()
+
     } catch (e: Exception) {
-        com.example.lifeline.util.ErrorHandler.showUnexpectedError(context)
+
+        com.example.lifeline.util.ErrorHandler
+            .showUnexpectedError(context)
     }
 }
 
