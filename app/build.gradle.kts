@@ -53,7 +53,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    implementation("androidx.compose.material:material-icons-extended:<version>")
+    implementation(libs.androidx.compose.icons.extended)
     implementation("androidx.navigation:navigation-compose:2.9.3")
     implementation("com.googlecode.libphonenumber:libphonenumber:9.0.6")
     implementation("com.google.android.gms:play-services-location:21.3.0")

@@ -9,7 +9,7 @@ import com.example.lifeline.R
 
 val InterFont = FontFamily(
     Font(
-        resId = R.font.inter_regaular,
+        resId = R.font.inter_regular,
         weight = FontWeight.Normal
     ),
     Font(
