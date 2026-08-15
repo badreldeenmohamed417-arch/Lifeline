@@ -112,7 +112,7 @@ fun AppNavigation(
                     com.example.lifeline.setup.SetupStorage.resetSetup(context)
 
                     // 2. Navigate back to start
-                    navController.navigate("permissions") {
+                    navController.navigate("contacts") {
                         popUpTo("home") {
                             inclusive = true
                         }

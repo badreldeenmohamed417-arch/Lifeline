@@ -44,19 +44,21 @@ class LifelineWidget : AppWidgetProvider() {
                 context,
                 MainActivity::class.java
             ).apply {
-                action = "com.example.lifeline.EMERGENCY"
+                flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
 
             val pendingIntent = PendingIntent.getActivity(
                 context,
-                appWidgetId,
+                0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or
                         PendingIntent.FLAG_IMMUTABLE
             )
 
             views.setOnClickPendingIntent(
-                R.id.widget_action,
+                R.id.widget_root,
                 pendingIntent
             )
 
