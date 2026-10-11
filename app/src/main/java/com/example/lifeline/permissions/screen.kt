@@ -18,7 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.الموقعOn
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
@@ -60,7 +60,7 @@ fun PermissionsScreen(
 
     LaunchedEffect(Unit) {
         val locationGranted =
-            LifelinePermissions.hasLocationPermission(context)
+            LifelinePermissions.hasالموقعPermission(context)
 
         val smsGranted =
             LifelinePermissions.hasSmsPermission(context)
@@ -92,7 +92,7 @@ fun PermissionsScreen(
             permissionVersion++
 
             val locationGranted =
-                LifelinePermissions.hasLocationPermission(context)
+                LifelinePermissions.hasالموقعPermission(context)
 
             val smsGranted =
                 LifelinePermissions.hasSmsPermission(context)
@@ -117,7 +117,7 @@ fun PermissionsScreen(
     val currentVersion = permissionVersion
 
     val locationGranted =
-        LifelinePermissions.hasLocationPermission(context)
+        LifelinePermissions.hasالموقعPermission(context)
 
     val smsGranted =
         LifelinePermissions.hasSmsPermission(context)
@@ -148,7 +148,7 @@ fun PermissionsScreen(
             )
 
             Text(
-                text = "A few permissions, so help is instant...",
+                text = "بعض الأذونات لتصلك المساعدة فورًا...",
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -178,12 +178,12 @@ fun PermissionsScreen(
 
                 item {
                     PermissionCard(
-                        icon = Icons.Default.LocationOn,
-                        title = "Location",
-                        description = "Attached to your emergency message so contacts know exactly where to find you.",
+                        icon = Icons.Default.الموقعOn,
+                        title = "الموقع",
+                        description = "يُرفق بمساعدة الطوارئ حتى يعرف أحباؤك مكانك بدقة.",
                         granted = locationGranted,
                         onClick = {
-                            LifelinePermissions.requestLocationPermission(
+                            LifelinePermissions.requestالموقعPermission(
                                 launcher
                             )
                         }
@@ -193,8 +193,8 @@ fun PermissionsScreen(
                 item {
                     PermissionCard(
                         icon = Icons.Default.Message,
-                        title = "SMS",
-                        description = "Sends your emergency message to the people you trust when Lifeline is triggered.",
+                        title = "الرسائل النصية",
+                        description = "يرسل رسالة الاستغاثة إلى الأشخاص الذين تثق بهم عند تفعيل لايف لاين.",
                         granted = smsGranted,
                         onClick = {
                             LifelinePermissions.requestSmsPermission(
@@ -207,8 +207,8 @@ fun PermissionsScreen(
                 item {
                     PermissionCard(
                         icon = Icons.Default.Phone,
-                        title = "Phone calls",
-                        description = "Allows Lifeline to start an emergency call when you trigger it.",
+                        title = "المكالمات الهاتفية",
+                        description = "يسمح للايف لاين ببدء مكالمة طوارئ عند تفعيله.",
                         granted = phoneGranted,
                         onClick = {
                             LifelinePermissions.requestPhonePermission(
@@ -221,8 +221,8 @@ fun PermissionsScreen(
                 item {
                     PermissionCard(
                         icon = Icons.Default.Phone,
-                        title = "Call status",
-                        description = "Allows Lifeline to know when an emergency contact answers or ends the call.",
+                        title = "حالة المكالمة",
+                        description = "يسمح للايف لاين بمعرفة متى يرد أحد جهات الاتصال على المكالمة أو ينهيها.",
                         granted = phoneStateGranted,
                         onClick = {
                             LifelinePermissions.requestPhoneStatePermission(
