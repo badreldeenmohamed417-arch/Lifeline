@@ -59,12 +59,12 @@ fun LifelineScreen(
     onReset: () -> Unit
 ) {
     val context = LocalContext.current
-    var showالإعداداتDialog by remember { mutableStateOf(false) }
+    var showSettingsDialog by remember { mutableStateOf(false) }
 
-    if (showالإعداداتDialog) {
+    if (showSettingsDialog) {
         androidx.compose.material3.AlertDialog(
             onDismissRequest = {
-                showالإعداداتDialog = false
+                showSettingsDialog = false
             },
             title = {
                 Text(
@@ -88,7 +88,7 @@ fun LifelineScreen(
                                 RoundedCornerShape(16.dp)
                             )
                             .clickable {
-                                showالإعداداتDialog = false
+                                showSettingsDialog = false
                                 onReset()
                             }
                             .background(
@@ -133,7 +133,7 @@ fun LifelineScreen(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        showالإعداداتDialog = false
+                        showSettingsDialog = false
                     }
                 ) {
                     Text(
@@ -187,10 +187,10 @@ fun LifelineScreen(
                 )
 
                 IconButton(
-                    onClick = { showالإعداداتDialog = true }
+                    onClick = { showSettingsDialog = true }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.الإعدادات,
+                        imageVector = Icons.Default.Settings,
                         contentDescription = "الإعدادات",
                         tint = Color.White
                     )
