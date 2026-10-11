@@ -60,7 +60,7 @@ fun PermissionsScreen(
 
     LaunchedEffect(Unit) {
         val locationGranted =
-            LifelinePermissions.hasالموقعPermission(context)
+            LifelinePermissions.hasLocationPermission(context)
 
         val smsGranted =
             LifelinePermissions.hasSmsPermission(context)
@@ -92,7 +92,7 @@ fun PermissionsScreen(
             permissionVersion++
 
             val locationGranted =
-                LifelinePermissions.hasالموقعPermission(context)
+                LifelinePermissions.hasLocationPermission(context)
 
             val smsGranted =
                 LifelinePermissions.hasSmsPermission(context)
@@ -117,7 +117,7 @@ fun PermissionsScreen(
     val currentVersion = permissionVersion
 
     val locationGranted =
-        LifelinePermissions.hasالموقعPermission(context)
+        LifelinePermissions.hasLocationPermission(context)
 
     val smsGranted =
         LifelinePermissions.hasSmsPermission(context)
@@ -178,12 +178,12 @@ fun PermissionsScreen(
 
                 item {
                     PermissionCard(
-                        icon = Icons.Default.الموقعOn,
+                        icon = Icons.Default.LocationOn,
                         title = "الموقع",
                         description = "يُرفق بمساعدة الطوارئ حتى يعرف أحباؤك مكانك بدقة.",
                         granted = locationGranted,
                         onClick = {
-                            LifelinePermissions.requestالموقعPermission(
+                            LifelinePermissions.requestLocationPermission(
                                 launcher
                             )
                         }
