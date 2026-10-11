@@ -36,7 +36,7 @@ class AmbulanceActivity : ComponentActivity() {
 
         val ambulanceNumber =
             intent.getStringExtra(
-                EXTRA_AMBULANCE_NUMBER
+                EXTRA_الإسعاف_NUMBER
             ).orEmpty()
 
         setContent {
@@ -59,7 +59,7 @@ class AmbulanceActivity : ComponentActivity() {
     }
 
     companion object {
-        const val EXTRA_AMBULANCE_NUMBER =
+        const val EXTRA_الإسعاف_NUMBER =
             "ambulance_number"
     }
 }
@@ -94,7 +94,7 @@ private fun AmbulanceScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "No one responded",
+                text = "لم يستجب أحد",
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -105,7 +105,7 @@ private fun AmbulanceScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Your emergency contacts didn't answer.\nYou may need emergency medical assistance.",
+                text = "لم يرد أي من جهات اتصال الطوارئ.\nقد تحتاج إلى مساعدة طبية طارئة.",
                 color = Color(0xFF9AA5B5),
                 fontSize = 15.sp,
                 lineHeight = 22.sp,
@@ -127,7 +127,7 @@ private fun AmbulanceScreen(
             ) {
                 Column {
                     Text(
-                        text = "AMBULANCE",
+                        text = "الإسعاف",
                         color = Color(0xFF9AA5B5),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -140,7 +140,7 @@ private fun AmbulanceScreen(
                         text = if (ambulanceNumber.isNotBlank())
                             ambulanceNumber
                         else
-                            "No number configured",
+                            "لم يتم إعداد رقم",
                         color = Color.White,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
@@ -164,7 +164,7 @@ private fun AmbulanceScreen(
                 )
             ) {
                 Text(
-                    text = "📞  CALL AMBULANCE",
+                    text = "📞  CALL الإسعاف",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
@@ -180,7 +180,7 @@ private fun AmbulanceScreen(
                     .height(50.dp)
             ) {
                 Text(
-                    text = "STOP ALERT",
+                    text = "إيقاف التنبيه",
                     color = Color(0xFF9AA5B5),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
