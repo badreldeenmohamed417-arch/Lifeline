@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 object NotificationHelper {
 
     private const val CHANNEL_ID = "lifeline_emergency"
-    private const val CHANNEL_NAME = "Lifeline Emergency"
+    private const val CHANNEL_NAME = "طوارئ لايف لاين"
     private const val NOTIFICATION_ID = 1001
 
     fun sendNotification(
@@ -57,7 +57,7 @@ object NotificationHelper {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "Lifeline emergency notifications"
+                description = "إشعارات الطوارئ من لايف لاين"
             }
 
             val manager =

@@ -128,7 +128,7 @@ fun ContactsScreen(
             )
 
             Text(
-                text = "Who should we alert?",
+                text = "مَن نُبلّغ في حالة الطوارئ؟",
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -140,7 +140,7 @@ fun ContactsScreen(
             )
 
             Text(
-                text = "These people receive an SMS with your location the moment you trigger Lifeline.",
+                text = "سيتلقى هؤلاء الأشخاص رسالة نصية تتضمن موقعك فور تفعيل لايف لاين.",
                 color = Color(0xFF9AA5B5),
                 fontSize = 15.sp,
                 lineHeight = 22.sp
@@ -251,7 +251,7 @@ fun ContactsScreen(
                 )
             ) {
                 Text(
-                    text = "Save & Continue",
+                    text = "حفظ ومتابعة",
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
                 )
@@ -426,7 +426,7 @@ fun getPermissions(
     }
 
     if (LifelinePermissions.shouldOpenSettings(activity)) {
-        openAppSettings(activity, "🔒 Please enable Contacts permission")
+        openAppSettings(activity, "🔒 يُرجى السماح بالوصول إلى جهات الاتصال")
     } else {
         LifelinePermissions.requestContactsPermission(launcher)
     }

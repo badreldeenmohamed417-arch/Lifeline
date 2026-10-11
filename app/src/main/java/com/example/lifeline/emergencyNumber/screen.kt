@@ -64,7 +64,7 @@ fun EmergencyNumberScreen(
             )
 
             Text(
-                text = "A few permissions, so help is instant...",
+                text = "بعض الأذونات لتصلك المساعدة فورًا...",
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -73,7 +73,7 @@ fun EmergencyNumberScreen(
             )
 
             Text(
-                text = "Lifeline only asks for what it needs to reach you and reach out for you the moment you trigger it. Nothing runs in the background otherwise.",
+                text = "لا يطلب لايف لاين إلا الأذونات اللازمة للوصول إليك وطلب المساعدة عند تفعيله. ولا يعمل في الخلفية في غير ذلك.",
                 color = Color(0xFF9AA5B5),
                 fontSize = 15.sp,
                 lineHeight = 22.sp,
@@ -93,10 +93,10 @@ fun EmergencyNumberScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 label = {
-                    Text("Emergency Number")
+                    Text("رقم الطوارئ")
                 },
                 placeholder = {
-                    Text("e.g. 123")
+                    Text("مثال: 123")
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -156,7 +156,7 @@ fun EmergencyNumberScreen(
                 )
             ) {
                 Text(
-                    text = "Save & Continue",
+                    text = "حفظ ومتابعة",
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
                 )

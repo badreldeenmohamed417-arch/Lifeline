@@ -17,7 +17,7 @@ fun emergencyWorker(
     try {
 
         val locationMsg = if (location.isNotBlank()) {
-            "Location on Maps: https://www.google.com/maps?q=$location"
+            "موقعي على خرائط Google: https://www.google.com/maps?q=$location"
         } else {
             ""
         }
@@ -46,7 +46,7 @@ fun emergencyWorker(
 
                             NotificationHelper.sendNotification(
                                 context,
-                                "Emergency SMS sent successfully"
+                                "تم إرسال رسالة الطوارئ بنجاح"
                             )
 
                             startEmergencyCalls(
@@ -60,7 +60,7 @@ fun emergencyWorker(
 
                             NotificationHelper.sendNotification(
                                 context,
-                                "Emergency SMS failed"
+                                "تعذّر إرسال رسالة الطوارئ"
                             )
                             startEmergencyCalls(
                                 context = context,
@@ -158,7 +158,7 @@ fun startEmergency(
 ) {
     try {
         val message = EmergencyMessageStorage.getMessage(context)
-            ?: "🚨 EMERGENCY! I need help! 🆘 Please contact me immediately. 📍"
+            ?: "🚨 حالة طوارئ! أحتاج إلى المساعدة فورًا 🆘 يُرجى التواصل معي فورًا. 📍"
 
         run(
             context,
@@ -177,7 +177,7 @@ fun stopEmergency(
         EmergencyManager.stop()
 
         // 2. Notify contacts that we are safe
-        val message = "🟢 Emergency cancelled. I'm safe now. ✅"
+        val message = "🟢 تم إلغاء حالة الطوارئ، أنا بخير الآن. ✅"
 
         val contacts = ContactStorage.getContacts(context)
 
@@ -190,13 +190,13 @@ fun stopEmergency(
                     is SmsResult.Success -> {
                         NotificationHelper.sendNotification(
                             context,
-                            "Safe SMS sent to all contacts"
+                            "تم إرسال رسالة الاطمئنان إلى جميع جهات الاتصال"
                         )
                     }
                     is SmsResult.Failed -> {
                         NotificationHelper.sendNotification(
                             context,
-                            "Failed to send Safe SMS"
+                            "تعذّر إرسال رسالة الاطمئنان"
                         )
                     }
                 }

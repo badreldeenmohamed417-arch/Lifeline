@@ -379,7 +379,7 @@ fun EmergencyButton(
                 ) {
 
                     Text(
-                        text = "HELP",
+                        text = "استغاثة",
                         color = Color.White,
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Black,
@@ -395,7 +395,7 @@ fun EmergencyButton(
                         text = if (isHolding) {
                             "${(progress * 100).toInt()}%"
                         } else {
-                            "Hold for 2 seconds"
+                            "اضغط مطولًا لمدة ثانيتين"
                         },
                         color = Color.White.copy(
                             alpha = 0.75f

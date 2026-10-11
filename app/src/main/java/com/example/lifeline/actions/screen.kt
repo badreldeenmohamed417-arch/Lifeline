@@ -80,7 +80,7 @@ fun QuickActionsScreen(
             )
 
             Text(
-                text = "How will you trigger it?",
+                text = "كيف ستفعّل الاستغاثة؟",
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -89,7 +89,7 @@ fun QuickActionsScreen(
             )
 
             Text(
-                text = "Pick one action. This is what you'll do when you need help — make it something you'll remember instantly, under stress.",
+                text = "اختر طريقة واحدة. ستستخدمها عندما تحتاج إلى المساعدة، لذا اختر شيئًا يسهل تذكّره حتى وقت التوتر.",
                 color = Color(0xFF9AA5B5),
                 fontSize = 15.sp,
                 lineHeight = 22.sp,
@@ -102,8 +102,8 @@ fun QuickActionsScreen(
 
             ActionCard(
                 icon = Icons.Default.Widgets,
-                title = "Lifeline Widget",
-                description = "Hold for 2 seconds...",
+                title = "أداة لايف لاين",
+                description = "اضغط مطولًا لمدة ثانيتين...",
                 granted = widgetEnabled,
                 onClick = {
                     widgetEnabled = ! widgetEnabled
@@ -144,7 +144,7 @@ fun QuickActionsScreen(
                 )
             ) {
                 Text(
-                    text = "Save & Continue",
+                    text = "حفظ ومتابعة",
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
                 )
@@ -166,7 +166,7 @@ fun QuickActionsScreen(
                 )
             ) {
                 Text(
-                    text = "Back",
+                    text = "رجوع",
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
                 )

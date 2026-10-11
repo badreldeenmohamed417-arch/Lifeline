@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.الإعدادات
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -68,7 +68,7 @@ fun LifelineScreen(
             },
             title = {
                 Text(
-                    text = "Settings",
+                    text = "الإعدادات",
                     color = Color.White,
                     fontFamily = InterFont,
                     fontWeight = FontWeight.Bold
@@ -103,7 +103,7 @@ fun LifelineScreen(
                         ) {
 
                             Text(
-                                text = "Reset Preferences",
+                                text = "إعادة ضبط الإعدادات",
                                 color = Color.White,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
@@ -115,7 +115,7 @@ fun LifelineScreen(
                             )
 
                             Text(
-                                text = "Restart Lifeline setup",
+                                text = "بدء إعداد لايف لاين من جديد",
                                 color = Color(0xFF9AA5B5),
                                 fontSize = 12.sp,
                                 fontFamily = InterFont
@@ -137,7 +137,7 @@ fun LifelineScreen(
                     }
                 ) {
                     Text(
-                        text = "Done",
+                        text = "تم",
                         color = Color.White,
                         fontFamily = InterFont
                     )
@@ -191,7 +191,7 @@ fun LifelineScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
-                        contentDescription = "Settings",
+                        contentDescription = "الإعدادات",
                         tint = Color.White
                     )
                 }
@@ -210,7 +210,7 @@ fun LifelineScreen(
             )
 
             Text(
-                text = "Hold for 2 seconds",
+                text = "اضغط مطولًا لمدة ثانيتين",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 color = Color(0xFF9AA5B5),
@@ -222,7 +222,7 @@ fun LifelineScreen(
                 modifier = Modifier.height(24.dp)
             )
 
-            // "I'm Good Now" Button
+            // "أنا بخير الآن" Button
             var stopHoldProgress by remember { mutableFloatStateOf(0f) }
             var isStopping by remember { mutableStateOf(false) }
 
@@ -271,7 +271,7 @@ fun LifelineScreen(
                 )
 
                 Text(
-                    text = "I'm Good Now",
+                    text = "أنا بخير الآن",
                     color = if (stopHoldProgress > 0) Calm else Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
@@ -302,7 +302,7 @@ fun LifelineScreen(
                 )
 
                 Text(
-                    text = "System is ready",
+                    text = "النظام جاهز",
                     color = Color(0xFF9AA5B5),
                     fontSize = 13.sp
                 )
