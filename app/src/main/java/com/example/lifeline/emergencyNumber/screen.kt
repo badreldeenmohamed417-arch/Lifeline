@@ -64,7 +64,7 @@ fun EmergencyNumberScreen(
             )
 
             Text(
-                text = "A few permissions, so help is instant...",
+                text = "بعض الأذونات لتصلك المساعدة فورًا...",
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -93,7 +93,7 @@ fun EmergencyNumberScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 label = {
-                    Text("Emergency Number")
+                    Text("رقم الطوارئ")
                 },
                 placeholder = {
                     Text("e.g. 123")
@@ -156,7 +156,7 @@ fun EmergencyNumberScreen(
                 )
             ) {
                 Text(
-                    text = "Save & Continue",
+                    text = "حفظ ومتابعة",
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
                 )
