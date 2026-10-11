@@ -108,7 +108,7 @@ private fun EmergencyDecisionScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Contact Answered",
+                text = "تم الرد على المكالمة",
                 color = Color.White,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
@@ -119,7 +119,7 @@ private fun EmergencyDecisionScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Do you want Lifeline to notify\nyour other emergency contacts?",
+                text = "هل تريد من لايف لاين إخطار\nجهات اتصال الطوارئ الأخرى؟",
                 color = Color(0xFF9AA5B5),
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
@@ -151,7 +151,7 @@ private fun EmergencyDecisionScreen(
                 )
             ) {
                 Text(
-                    text = "YES, NOTIFY OTHERS",
+                    text = "نعم، أبلغ الآخرين",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
@@ -167,7 +167,7 @@ private fun EmergencyDecisionScreen(
                     .height(50.dp)
             ) {
                 Text(
-                    text = "STOP ALERT",
+                    text = "إيقاف التنبيه",
                     color = Color(0xFFFF5757),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
