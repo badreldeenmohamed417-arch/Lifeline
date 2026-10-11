@@ -73,7 +73,7 @@ fun EmergencyNumberScreen(
             )
 
             Text(
-                text = "Lifeline only asks for what it needs to reach you and reach out for you the moment you trigger it. Nothing runs in the background otherwise.",
+                text = "لا يطلب لايف لاين إلا الأذونات اللازمة للوصول إليك وطلب المساعدة عند تفعيله. ولا يعمل في الخلفية في غير ذلك.",
                 color = Color(0xFF9AA5B5),
                 fontSize = 15.sp,
                 lineHeight = 22.sp,
@@ -96,7 +96,7 @@ fun EmergencyNumberScreen(
                     Text("رقم الطوارئ")
                 },
                 placeholder = {
-                    Text("e.g. 123")
+                    Text("مثال: 123")
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
