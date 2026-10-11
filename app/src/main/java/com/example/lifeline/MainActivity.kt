@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import com.example.lifeline.checkNumbers.ContactStorage
 import com.example.lifeline.emergencyMessage.EmergencyMessageStorage
 import com.example.lifeline.emergencyNumber.EmergencyNumberStorage
@@ -33,7 +36,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LifelineTheme {
-
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
@@ -45,6 +48,7 @@ class MainActivity : ComponentActivity() {
                             startDestination = startDestination
                         )
                     }
+                }
                 }
             }
         }
