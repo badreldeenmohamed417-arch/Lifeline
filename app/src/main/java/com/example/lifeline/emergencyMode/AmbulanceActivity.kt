@@ -36,7 +36,7 @@ class AmbulanceActivity : ComponentActivity() {
 
         val ambulanceNumber =
             intent.getStringExtra(
-                EXTRA_الإسعاف_NUMBER
+                EXTRA_AMBULANCE_NUMBER
             ).orEmpty()
 
         setContent {
@@ -59,7 +59,7 @@ class AmbulanceActivity : ComponentActivity() {
     }
 
     companion object {
-        const val EXTRA_الإسعاف_NUMBER =
+        const val EXTRA_AMBULANCE_NUMBER =
             "ambulance_number"
     }
 }
@@ -164,7 +164,7 @@ private fun AmbulanceScreen(
                 )
             ) {
                 Text(
-                    text = "📞  CALL الإسعاف",
+                    text = "📞 اتصل بالإسعاف",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
