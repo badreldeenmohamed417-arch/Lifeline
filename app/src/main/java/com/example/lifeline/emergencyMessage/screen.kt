@@ -63,7 +63,7 @@ fun EmergencyMessageScreen(
             )
 
             Text(
-                text = "A few permissions, so help is instant...",
+                text = "بعض الأذونات لتصلك المساعدة فورًا...",
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -93,12 +93,12 @@ fun EmergencyMessageScreen(
                     .height(140.dp),
                 label = {
                     Text(
-                        text = "Emergency Message"
+                        text = "رسالة الاستغاثة"
                     )
                 },
                 placeholder = {
                     Text(
-                        text = "🚨 I need immediate help! 🆘"
+                        text = "🚨 أحتاج إلى المساعدة فورًا! 🆘"
                     )
                 },
                 maxLines = 5,
@@ -156,7 +156,7 @@ fun EmergencyMessageScreen(
                 )
             ) {
                 Text(
-                    text = "Save & Continue",
+                    text = "حفظ ومتابعة",
                     fontWeight = FontWeight.Bold,
                     fontFamily = InterFont
                 )
