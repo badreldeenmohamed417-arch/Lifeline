@@ -53,7 +53,7 @@ private val Calm = Color(0xFF33C48A)
 @Composable
 fun QuickActionsScreen(
     onContinue: () -> Unit = {},
-    onرجوع: () -> Unit = {}
+    onBack: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -152,7 +152,7 @@ fun QuickActionsScreen(
 
             Button(
                 onClick = {
-                    onرجوع()
+                    onBack()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
