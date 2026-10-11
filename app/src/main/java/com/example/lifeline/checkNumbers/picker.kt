@@ -72,7 +72,7 @@ fun ContactPicker(
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = {
                         Text(
-                            text = "Search contacts...",
+                            text = "ابحث في جهات الاتصال...",
                             color = Color(0xFF697386)
                         )
                     },
@@ -208,7 +208,7 @@ fun ContactPickerRow(
 
         if (selected) {
             Text(
-                text = "Added",
+                text = "تمت الإضافة",
                 color = Calm,
                 fontSize = 12.sp
             )
