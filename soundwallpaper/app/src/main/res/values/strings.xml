@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound Wallpaper</string>
+    <string name="wallpaper_name">Video wallpaper with sound</string>
+    <string name="wallpaper_description">Plays the selected video and sound while the live wallpaper is visible.</string>
+</resources>
